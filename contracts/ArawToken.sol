@@ -7,7 +7,14 @@ contract ArawToken is StandardToken {
     string public name;
     uint256 public decimals;
     uint public _totalSupply;
-    using SafeMath for uint256; enum State {
+    using SafeMath for uint256;
+    uint256 public releaseTime1;
+    uint256 public releaseTime2;
+    uint256 public releaseTime3;
+    bool public isReleaseTime1;
+    bool public isReleaseTime2;
+    bool public isReleaseTime3;
+    enum State {
         Active,
         Closed
     }
@@ -32,9 +39,7 @@ contract ArawToken is StandardToken {
         balances[founderTokens] = balances[reservedTokens].add(
             150000000 * (10 ** decimals)
         );
-        balances[advisorTokens] = balances[reservedTokens].add(
-            150000000 * (10 ** decimals)
-        );
+       
         state = State.Active;
         emit Transfer(address(0), msg.sender, balances[msg.sender]);
         emit Transfer(address(0), reservedTokens, balances[reservedTokens]);
@@ -42,6 +47,45 @@ contract ArawToken is StandardToken {
         emit Transfer(address(0), advisorTokens, balances[advisorTokens]);
     }
 
+    function releaseAdvisorTokens() public {
+         require(state == State.Closed);
+        if(now < releaseTime1){
+            revert();
+        }else if(now>releaseTime1 && now <releaseTime2 && !isReleaseTime1){
+            isReleaseTime1 = true;
+            releaseTokenAdvisor(30);
+            //here we will
+        }else if (now>releaseTime2 &&now < releaseTime3&& !isReleaseTime2){
+            if(!isReleaseTime1){
+                 releaseTokenAdvisor(30);
+            }
+            isReleaseTime1 = true;
+            isReleaseTime2 = true;
+             releaseTokenAdvisor(30);
+            
+        }else if( now>releaseTime3 &&!isReleaseTime3){
+               if(!isReleaseTime1){
+                 releaseTokenAdvisor(30);
+              }
+              if(!isReleaseTime2){
+                 releaseTokenAdvisor(30);
+              }
+              releaseTokenAdvisor(40);
+             isReleaseTime1 = true;
+             isReleaseTime2 = true;
+             isReleaseTime3 = true;
+        }else {
+            revert();
+        }
+    }
+    function releaseTokenAdvisor(uint256 percent) internal returns(bool){
+        uint256 totalAdvisorCoins = 150000000 *  (10 ** decimals);
+        uint256 releasedTokens =  (percent.mul(totalAdvisorCoins)).div(100);
+         balances[advisorTokens] = balances[reservedTokens].add(
+            releasedTokens
+        );
+        emit Transfer(address(0), advisorTokens, balances[advisorTokens]);
+    }
     // ------------------------------------------------------------------------
     // Doesn't Accept Eth
     // ------------------------------------------------------------------------
@@ -52,6 +96,11 @@ contract ArawToken is StandardToken {
         require(state == State.Active);
         state = State.Closed;
         afterIcoLockingPeriod = now + 12 weeks;
+        founderTokenLockPeriod = now + 365 days;
+        reserveTokenLockPeriod = now + 1095 days; //3 years
+        releaseTime1 = now + 12 weeks; //3 months to unlock 30 %
+        releaseTime2 = now + 24 weeks; // 6 months to unlock 30%
+        releaseTime3 = now + 365 days; //1 year to unlock 40 %
         emit Closed();
     }
 

@@ -14,7 +14,7 @@ BasicToken {
    * @param _to address The address which you want to transfer to
    * @param _value uint256 the amount of tokens to be transferred
    */
-    function transferFrom(address _from, address _to, uint256 _value)public whenNotPaused
+    function transferFrom(address _from, address _to, uint256 _value)public whenNotPaused checkAfterICOLock
     returns(bool) {
         require(_to != address(0));
         require(_value <= balances[_from]);
@@ -37,7 +37,7 @@ BasicToken {
    * @param _spender The address which will spend the funds.
    * @param _value The amount of tokens to be spent.
    */
-    function approve(address _spender, uint256 _value)public returns(bool) {
+    function approve(address _spender, uint256 _value)public whenNotPaused checkAfterICOLock returns(bool) {
         allowed[msg.sender][_spender] = _value;
         emit Approval(msg.sender, _spender, _value);
         return true;
@@ -65,7 +65,7 @@ BasicToken {
    * @param _spender The address which will spend the funds.
    * @param _addedValue The amount of tokens to increase the allowance by.
    */
-    function increaseApproval(address _spender, uint _addedValue)public
+    function increaseApproval(address _spender, uint _addedValue)public whenNotPaused checkAfterICOLock
     returns(bool) {
         allowed[msg.sender][_spender] = (
             allowed[msg.sender][_spender].add(_addedValue)
