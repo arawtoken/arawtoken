@@ -44,7 +44,6 @@ contract ArawToken is StandardToken {
         emit Transfer(address(0), msg.sender, balances[msg.sender]);
         emit Transfer(address(0), reservedTokens, balances[reservedTokens]);
         emit Transfer(address(0), founderTokens, balances[founderTokens]);
-        emit Transfer(address(0), advisorTokens, balances[advisorTokens]);
     }
 
     function releaseAdvisorTokens() public {

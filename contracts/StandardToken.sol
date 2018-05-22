@@ -5,9 +5,26 @@ import "./BasicToken.sol";
 
 contract StandardToken is ERC20,
 BasicToken {
-
+    event Burn(address indexed burner, uint256 value);
     mapping(address => mapping(address => uint256))internal allowed;
+     /**
+   * @dev Burns a specific amount of tokens.
+   * @param _value The amount of token to be burned.
+   */
+    function burn(uint256 _value) public {
+        _burn(msg.sender, _value);
+    }
 
+    function _burn(address _who, uint256 _value) internal {
+        require(_value <= balances[_who]);
+        // no need to require value <= totalSupply, since that would imply the
+        // sender's balance is greater than the totalSupply, which *should* be an assertion failure
+
+        balances[_who] = balances[_who].sub(_value);
+        totalSupply_ = totalSupply_.sub(_value);
+        emit Burn(_who, _value);
+        emit Transfer(_who, address(0), _value);
+    }
     /**
    * @dev Transfer tokens from one address to another
    * @param _from address The address which you want to send tokens from
