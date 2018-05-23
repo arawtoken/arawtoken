@@ -1,7 +1,6 @@
-# ArawToken
+# ARAW Smart Contracts
 
-//Please add description of your project
-
+TODO: Add project details
 
 
 ## Files
