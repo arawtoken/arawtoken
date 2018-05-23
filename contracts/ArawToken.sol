@@ -36,8 +36,8 @@ contract ArawToken is StandardToken {
         balances[reservedTokens] = balances[reservedTokens].add(
             750000000 * (10 ** decimals)
         );
-        balances[founderTokens] = balances[reservedTokens].add(
-            150000000 * (10 ** decimals)
+        balances[founderTokens] = balances[founderTokens].add(
+            450000000 * (10 ** decimals)
         );
        
         state = State.Active;
