@@ -1,10 +1,5 @@
 # ARAW Smart Contracts
 
-TODO: Add project details
-
-
-## Files
-
 * `contracts/` contains smart contract code to be deployed.
 * `contracts/ArawToken.sol`  defining token information and assigning tokens to pool.
 * `contracts/BasicToken.sol` ERC20 Basic Function implementation.
