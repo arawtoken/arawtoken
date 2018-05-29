@@ -1,6 +1,7 @@
 # ARAW Smart Contracts
 
 * `contracts/` contains smart contract code to be deployed.
+* `contracts/AirDrop.sol`  helps to airdrop tokens.
 * `contracts/ArawToken.sol`  defining token information and assigning tokens to pool.
 * `contracts/BasicToken.sol` ERC20 Basic Function implementation.
 * `contracts/ERC20.sol` ERC20 interface.
