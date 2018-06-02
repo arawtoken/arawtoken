@@ -1,3 +1,12 @@
+# ARAW 
+
+ARAW is the Decentralised Payment for E-Commerce Ecosystem.
+We are on a mission to provide end-to-end solutions for E-Commerce Marketplace, Touch & Pay Cryptocurrency Card, Online Cryptocurrency Payment, and Unified Reward System powered by the Ethereum Blockchain.
+
+Check https://arawtoken.io/ for more details.
+
+Please note that this repository is under development. The code here will be under continual audit and improved until release of the completed system.
+
 # ARAW Smart Contracts
 
 * `contracts/` contains smart contract code to be deployed.
@@ -7,7 +16,7 @@
 * `contracts/ERC20.sol` ERC20 interface.
 * `contracts/ERC20Basic.sol` Basic ERC20 function interface.
 * `contracts/Ownable.sol` a contract with an owner.
-* `contracts/Pauseable.sol` a contract having pause modifier and it is used in pausing transfering of tokens.
 * `contracts/SafeMath.sol` a library to handle all basic math operations like sum, divide or multiply, with built-in safety checking.
+* `contracts/StandardBurnableToken.sol` helps to burn token functionality.
 * `contracts/StandardToken.sol` a contract contain implementation of ERC20 interface and contain burn functionality. This contract also helps to handle token lock functionality.
 * `tests/` test cases.
