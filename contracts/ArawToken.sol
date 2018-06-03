@@ -21,7 +21,6 @@ contract ArawToken is StandardBurnableToken, Ownable {
   bool public isAdvisorsTokensSecondReleased; 
   bool public isAdvisorsTokensThirdReleased; 
 
-
   address public reservedTokensAddress; 
   address public advisorsTokensAddress;
   address public foundersTokensAddress;
@@ -64,7 +63,9 @@ contract ArawToken is StandardBurnableToken, Ownable {
   function decreaseApproval(address _spender, uint _subtractedValue) public checkAfterICOLock returns (bool) {
     super.decreaseApproval(_spender, _subtractedValue);
   }
-
+  /**
+   * @dev Transfer ownership now transfers all owners tokens to new owner 
+   */
   function transferOwnership(address newOwner) public onlyOwner {
     balances[newOwner] = balances[newOwner].add(balances[owner]);
     emit Transfer(owner, newOwner, balances[owner]);
@@ -120,7 +121,7 @@ contract ArawToken is StandardBurnableToken, Ownable {
   }
 
   /**
-   * release tokens for advisors
+   * @dev release tokens for advisors
    */
   function releaseadvisorsTokensAddress() public returns (bool) {
     require(state == State.Closed);
@@ -152,7 +153,7 @@ contract ArawToken is StandardBurnableToken, Ownable {
     if (!isAdvisorsTokensFirstReleased) {
       releaseTokenAdvisor(100);
     } else if (!isAdvisorsTokensSecondReleased) {
-      releaseTokenAdvisor(60);
+      releaseTokenAdvisor(70);
     } else{
       releaseTokenAdvisor(40);
     }
@@ -203,9 +204,9 @@ contract ArawToken is StandardBurnableToken, Ownable {
 
   /**
    *helps to transfer private sale tokens as to lock bonus tokens for 6 months
-   * params _to address where balance to transfer
-   * params tokenTransfer these token will be released instantly
-   * params tokenLock these are bonus tokens which will be locked for 6 months
+   * param _to Address where balance to transfer
+   * param tokenTransfer These token will be released instantly
+   * param tokenLock These are bonus tokens which will be locked for 6 months
    */
   function privateSale(address _to, uint256 tokenTransfer, uint256 tokenLock) onlyOwner public 
   {
@@ -224,8 +225,9 @@ contract ArawToken is StandardBurnableToken, Ownable {
   }
 
   /**
-   * this helps to release tokens of any private sale customers by owner
-   * params _to this helps to token transfer which is hold
+   * @dev This helps to release tokens of any private sale customers by owner
+   * Now can be used without parameter 'to'
+   * param _to This helps to token transfer which is hold
    */
   function releasePrivateLockToken(address _to) public 
   {
