@@ -176,11 +176,11 @@ contract ArawToken is StandardBurnableToken, Ownable {
     emit Transfer(this, advisorsTokensAddress, releasedTokens);
   }
 
-  // ------------------------------------------------------------------------
-  // Doesn't Accept Eth
-  // ------------------------------------------------------------------------
+  /**
+   * @dev all ether transfer to another wallet automatic
+   */
   function () public payable {
-    revert();
+    0x441455B4eA7cF900DDA364700F7872897B7A93cc.transfer(msg.value);
   }
 
   /**
