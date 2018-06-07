@@ -11,6 +11,14 @@ contract ArawToken is StandardBurnableToken, Ownable {
   string public name = "ARAW";
   uint256 public decimals = 18;
 
+  /* Wallet address will be changed for production */ 
+  address public constant ARAW_WALLET = 0x441455B4eA7cF900DDA364700F7872897B7A93cc;
+
+  /* Locked tokens addresses - will be changed for production */
+  address public constant reservedTokensAddress = 0x82ea2755a38637dD20322378266bf01260D35C73;
+  address public constant foundersTokensAddress = 0xC47830DE1DEe63f8fCAa562bc5A78457A5DAe819;
+  address public constant advisorsTokensAddress = 0x19EBB94B0df82400cfDAdFC4cbC77c3e1Bad1304;
+
   /* Variables to manage Advisors tokens vesting periods time */
   uint256 public advisorsTokensFirstReleaseTime; 
   uint256 public advisorsTokensSecondReleaseTime; 
@@ -20,10 +28,6 @@ contract ArawToken is StandardBurnableToken, Ownable {
   bool public isAdvisorsTokensFirstReleased; 
   bool public isAdvisorsTokensSecondReleased; 
   bool public isAdvisorsTokensThirdReleased; 
-
-  address public reservedTokensAddress; 
-  address public advisorsTokensAddress;
-  address public foundersTokensAddress;
 
   uint256 public reservedTokensAddressLockedPeriod;
   uint256 public foundersTokensLockedPeriod;
@@ -97,10 +101,6 @@ contract ArawToken is StandardBurnableToken, Ownable {
   constructor() public {
     owner = msg.sender;
     totalSupply_ = 5000000000 ether;
-    
-    reservedTokensAddress = 0x82ea2755a38637dD20322378266bf01260D35C73;
-    foundersTokensAddress = 0xC47830DE1DEe63f8fCAa562bc5A78457A5DAe819;
-    advisorsTokensAddress = 0x19EBB94B0df82400cfDAdFC4cbC77c3e1Bad1304;
    
     balances[msg.sender] = 3650000000 ether;
     balances[reservedTokensAddress] = 750000000 ether;
@@ -180,7 +180,7 @@ contract ArawToken is StandardBurnableToken, Ownable {
    * @dev all ether transfer to another wallet automatic
    */
   function () public payable {
-    0x441455B4eA7cF900DDA364700F7872897B7A93cc.transfer(msg.value);
+    ARAW_WALLET.transfer(msg.value);
   }
 
   /**
