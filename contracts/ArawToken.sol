@@ -203,10 +203,10 @@ contract ArawToken is StandardBurnableToken, Ownable {
   }
 
   /**
-   *helps to transfer private sale tokens as to lock bonus tokens for 6 months
+   *helps to transfer private sale tokens as to lock bonus tokens for 3 months
    * param _to Address where balance to transfer
    * param tokenTransfer These token will be released instantly
-   * param tokenLock These are bonus tokens which will be locked for 6 months
+   * param tokenLock These are bonus tokens which will be locked for 3 months
    */
   function privateSale(address _to, uint256 tokenTransfer, uint256 tokenLock) onlyOwner public 
   {
