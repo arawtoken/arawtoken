@@ -12,12 +12,12 @@ contract ArawToken is StandardBurnableToken, Ownable {
   uint256 public decimals = 18;
 
   /* Wallet address will be changed for production */ 
-  address public constant ARAW_WALLET = 0x441455B4eA7cF900DDA364700F7872897B7A93cc;
+  address public arawWallet;
 
   /* Locked tokens addresses - will be changed for production */
-  address public constant reservedTokensAddress = 0x82ea2755a38637dD20322378266bf01260D35C73;
-  address public constant foundersTokensAddress = 0xC47830DE1DEe63f8fCAa562bc5A78457A5DAe819;
-  address public constant advisorsTokensAddress = 0x19EBB94B0df82400cfDAdFC4cbC77c3e1Bad1304;
+  address public reservedTokensAddress;
+  address public foundersTokensAddress;
+  address public advisorsTokensAddress;
 
   /* Variables to manage Advisors tokens vesting periods time */
   uint256 public advisorsTokensFirstReleaseTime; 
@@ -84,13 +84,6 @@ contract ArawToken is StandardBurnableToken, Ownable {
     Closed
   }
 
-  mapping (address => uint256) public privateBonusLockedTokens;
-  mapping (address => uint256) public publicBonusLockedTokens;
-
-  event PrivateTokenLock(address indexed _from, address indexed _to, uint256 tokens);
-
-  uint256 public privLockTokenTime;
-
   event Closed();
 
   State public state;
@@ -98,8 +91,15 @@ contract ArawToken is StandardBurnableToken, Ownable {
   // ------------------------------------------------------------------------
   // Constructor
   // ------------------------------------------------------------------------
-  constructor() public {
+  constructor(address _reservedTokensAddress, address _foundersTokensAddress, address _advisorsTokensAddress, address _arawWallet) public {
     owner = msg.sender;
+
+    reservedTokensAddress = _reservedTokensAddress;
+    foundersTokensAddress = _foundersTokensAddress;
+    advisorsTokensAddress = _advisorsTokensAddress;
+
+    arawWallet = _arawWallet;
+
     totalSupply_ = 5000000000 ether;
    
     balances[msg.sender] = 3650000000 ether;
@@ -123,7 +123,7 @@ contract ArawToken is StandardBurnableToken, Ownable {
   /**
    * @dev release tokens for advisors
    */
-  function releaseadvisorsTokensAddress() public returns (bool) {
+  function releaseadvisorsTokens() public returns (bool) {
     require(state == State.Closed);
     
     require (now > advisorsTokensFirstReleaseTime);
@@ -182,7 +182,7 @@ contract ArawToken is StandardBurnableToken, Ownable {
   function () public payable {
     require(state == State.Active); // Reject the transactions after ICO ended
 
-    ARAW_WALLET.transfer(msg.value);
+    arawWallet.transfer(msg.value);
   }
 
   /**
@@ -197,53 +197,7 @@ contract ArawToken is StandardBurnableToken, Ownable {
     advisorsTokensFirstReleaseTime = now + 12 weeks; //3 months to unlock 30 %
     advisorsTokensSecondReleaseTime = now + 24 weeks; // 6 months to unlock 30%
     advisorsTokensThirdReleaseTime = now + 365 days; //1 year to unlock 40 %
-
-    //Private sell BONUS tokens will be locked for 3 months after the ICO ended.
-    privLockTokenTime = now + 120 days;
     
     emit Closed();
   }
-
-  /**
-   *helps to transfer private sale tokens as to lock bonus tokens for 3 months
-   * param _to Address where balance to transfer
-   * param tokenTransfer These token will be released instantly
-   * param tokenLock These are bonus tokens which will be locked for 3 months
-   */
-  function privateSale(address _to, uint256 tokenTransfer, uint256 tokenLock) onlyOwner public 
-  {
-    require(_to != address(0));
-    require(tokenTransfer > 0);
-    require(tokenLock > 0);
-
-    transfer(_to, tokenTransfer);
-    
-    require(balances[msg.sender] >= tokenLock);
-    
-    balances[msg.sender] = balances[msg.sender].sub(tokenLock);
-    privateBonusLockedTokens[_to] = privateBonusLockedTokens[_to].add(tokenLock);
-   
-    emit PrivateTokenLock(msg.sender, _to, tokenLock);
-  }
-
-  /**
-   * @dev This helps to release tokens of any private sale customers by owner
-   * Now can be used without parameter 'to'
-   * param _to This helps to token transfer which is hold
-   */
-  function releasePrivateLockToken(address _to) public 
-  {
-    require(now > privLockTokenTime);
-
-    if (_to == address(0)){
-      _to = msg.sender;
-    }
-
-    require(privateBonusLockedTokens[_to] > 0);
-    balances[_to] = balances[_to].add(privateBonusLockedTokens[_to]);
-  
-    emit Transfer(msg.sender, _to, privateBonusLockedTokens[_to]);
-    
-    privateBonusLockedTokens[_to] = 0;
-  } //end of release
 }
