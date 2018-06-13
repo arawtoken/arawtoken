@@ -116,8 +116,6 @@ contract ArawToken is StandardBurnableToken, Ownable {
     emit Transfer(address(0), reservedTokensAddress, balances[reservedTokensAddress]);
     emit Transfer(address(0), foundersTokensAddress, balances[foundersTokensAddress]);
     emit Transfer(address(0), address(this), balances[this]);
-
-    privLockTokenTime = now + 182 days;
   }
 
   /**
