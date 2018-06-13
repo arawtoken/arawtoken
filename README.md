@@ -50,9 +50,7 @@ npm install chai-as-promised
 
 ```
 Step#1: Navigate to root folder
-Step#2: 
-  On Linux: run 'testrpc' from console
-  On Mac: ganache-cli
+Step#2: Run 'testrpc' or 'ganache-cli' from console
 Step#3: Open another console and from root folder run 'truffle test'
 ```
 
@@ -75,7 +73,7 @@ Compiling ./contracts/StandardToken.sol...
 
   Contract: Token contract
     Check SC instance
-tokenContract = 0x2a4257f030854ad23eb650f29f973cd89dcc1ad1
+tokenContract = 0xbc7ba4ba4a47b2ad31e3ddc2c9ff81d8ecb27b68
       ✓ catch an instance of tokenContract
 totalSupply = 5e+27
       ✓ Saving totalSupply
@@ -87,7 +85,7 @@ Token Symbol = ARAW
 Token decimals = 18
       ✓ check Token Decimals
     Get tokenHolders addresses
-owner = 0x48df9cd57bb0b4efcc644d865dfd1820c2917a9b
+owner = 0x06bba2c1fe7cd17f34d0a7a2e45a52ead67a2a64
       ✓ check owner address
 reservedTokensAddress = 0x82ea2755a38637dd20322378266bf01260d35c73
       ✓ check reservedTokensAddress address
@@ -97,48 +95,40 @@ advisorsTokensAddress = 0x19ebb94b0df82400cfdadfc4cbc77c3e1bad1304
       ✓ check advisorsTokensAddress address
     Check initial balances
 3.65e+27
-      ✓ check owner balance (107ms)
+      ✓ check owner balance (111ms)
 7.5e+26
       ✓ check reservedTokensAddress balance
 4.5e+26
       ✓ check foundersTokensAddress balance
 1.5e+26
       ✓ check holded for advisorsTokensAddress in contract balance
-    Check privateSale stage
-      ✓ owner send 1000 tokens to another address, and lock 800 tokens (131ms)
-      ✓ check his token balance (101ms)
-      ✓ check his lockes tokens (103ms)
-      ✓ try to release locked tokens (this transacion must failed) (105ms)
     Check function transfer
-      ✓ check owner possibility to transfer tokens (210ms)
-      ✓ check another user possibility to transfer tokens (210ms)
+      ✓ check owner possibility to transfer tokens (251ms)
+      ✓ check another user possibility to transfer tokens (230ms)
     close ICO
-      ✓ owner try to close ICO (130ms)
+      ✓ owner try to close ICO (165ms)
       ✓ owner try to close ICO again (this transacion must failed)
     increase EVM time
-1560614945
-      ✓ get blockTimestamp now (183ms)
-      ✓ increse up to 121 days (182ms)
-1571069345
-      ✓ get blockTimestamp again (174ms)
-      ✓ release privateLockTokens now (177ms)
-1.8e+21
-      ✓ check his balance now (101ms)
+1528898790
+      ✓ get blockTimestamp now (190ms)
+      ✓ increse up to 121 days (190ms)
+1539353191
+      ✓ get blockTimestamp again (185ms)
     release advisors tokens
-      ✓ calling releaseadvisorsTokensAddress function
+      ✓ calling releaseadvisorsTokens function (41ms)
 4.5e+25
 4.5e+25
       ✓ check advisorsBalance now
       ✓ try to call again (transacion must failed)
-      ✓ increse time to 3d release (179ms)
-      ✓ call releaseadvisorsTokensAddress (44ms)
+      ✓ increse time to 3d release (201ms)
+      ✓ call releaseadvisorsTokens (43ms)
 1.5e+26
 1.5e+26
       ✓ check advisorsBalance now
       ✓ try to call again (transacion must failed)
 
 
-  33 passing (2s)
+  27 passing (2s)
 ```
 
 
