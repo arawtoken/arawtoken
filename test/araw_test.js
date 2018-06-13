@@ -63,31 +63,31 @@ contract("Token contract", function(accounts){
         owner = res.toString();
       })
     })
+
     it ("check reservedTokensAddress address", function(){
       return TokenInstance.reservedTokensAddress.call().then(function(res){
         console.log("reservedTokensAddress = "+ res.toString());
         reservedTokensAddress = res.toString();
-        //hardcoded address
-        expect(res.toString()).to.be.equal("0x82ea2755a38637dd20322378266bf01260d35c73");
       })
     })
+
     it ("check foundersTokensAddress address", function(){
       return TokenInstance.foundersTokensAddress.call().then(function(res){
         console.log("foundersTokensAddress = "+ res.toString());
         foundersTokensAddress = res.toString();
-        //hardcoded address
-        expect(res.toString()).to.be.equal("0xc47830de1dee63f8fcaa562bc5a78457a5dae819");
       })
     })
+
     it ("check advisorsTokensAddress address", function(){
       return TokenInstance.advisorsTokensAddress.call().then(function(res){
         console.log("advisorsTokensAddress = "+ res.toString());
         advisorsTokensAddress = res.toString();
-        //hardcoded address
-        expect(res.toString()).to.be.equal("0x19ebb94b0df82400cfdadfc4cbc77c3e1bad1304");
       })
     })
+
   })
+
+
 
 
   describe ("Check initial balances", function(){
@@ -120,33 +120,6 @@ contract("Token contract", function(accounts){
       });
     });
   });
-
-  describe ("Check privateSale stage", function (){
-    it ("owner send 1000 tokens to another address, and lock 800 tokens", function(){
-      return TokenInstance.privateSale(web3.eth.accounts[1], 1000*Math.pow(10,Decimals), 800*Math.pow(10,Decimals))
-      .then(function(res){
-        expect(res.toString()).to.not.be.an("error");
-      })
-    })
-    it ("check his token balance", function(){
-      return (TokenInstance.balanceOf(web3.eth.accounts[1])).then(function(res){
-        expect(res.toString()).to.be.equal((1000*Math.pow(10,Decimals)).toString());
-      })
-    })
-    it ("check his lockes tokens", function(){
-      return (TokenInstance.privateBonusLockedTokens(web3.eth.accounts[1])).then(function(res){
-        expect(res.toString()).to.be.equal((800*Math.pow(10,Decimals)).toString());
-      })
-    })
-    it ("try to release locked tokens (this transacion must failed)", async function(){
-      try {
-        await TokenInstance.releasePrivateLockToken(web3.eth.accounts[1])
-        assert.ok(false, "It didn't fail")
-      } catch(error){
-        assert.ok(true, "It must failed");
-      }
-    })
-  })
 
   describe ("Check function transfer", function (){
     it ("check owner possibility to transfer tokens", function(){
@@ -191,24 +164,11 @@ contract("Token contract", function(accounts){
     it ("get blockTimestamp again", function(){
       console.log(web3.eth.getBlock(web3.eth.blockNumber).timestamp);
     })
-
-    it ("release privateLockTokens now", function(){
-      return TokenInstance.releasePrivateLockToken(web3.eth.accounts[1]).then(function(res){
-        expect(res.toString()).to.not.be.an("error");
-      })
-    })
-
-    it("check his balance now", function(){
-      return TokenInstance.balanceOf(web3.eth.accounts[1]).then(function(res){
-        console.log(res.toString());
-        expect(res.toString()).to.be.equal((1800*Math.pow(10,Decimals)).toString())
-      })
-    })
   })
 
   describe("release advisors tokens", function(){
-    it ("calling releaseadvisorsTokensAddress function", function(){
-      return TokenInstance.releaseadvisorsTokensAddress().then(function(res){
+    it ("calling releaseadvisorsTokens function", function(){
+      return TokenInstance.releaseadvisorsTokens().then(function(res){
         expect(res.toString()).to.not.be.an("error");
       })
     })
@@ -223,7 +183,7 @@ contract("Token contract", function(accounts){
 
     it ("try to call again (transacion must failed)", async function(){
       try {
-        await TokenInstance.releaseadvisorsTokensAddress()
+        await TokenInstance.releaseadvisorsTokens()
         assert.ok(false, "It didn't fail")
       } catch(error){
         assert.ok(true, "It must failed");
@@ -235,8 +195,8 @@ contract("Token contract", function(accounts){
       web3.currentProvider.send({jsonrpc: "2.0", method: "evm_mine", params: [], id: 0})
     })
 
-    it ("call releaseadvisorsTokensAddress", function(){
-      return TokenInstance.releaseadvisorsTokensAddress().then(function(res){
+    it ("call releaseadvisorsTokens", function(){
+      return TokenInstance.releaseadvisorsTokens().then(function(res){
         expect(res.toString()).to.not.be.an("error");
       })
     })
@@ -250,7 +210,7 @@ contract("Token contract", function(accounts){
 
     it ("try to call again (transacion must failed)", async function(){
       try {
-        await TokenInstance.releaseadvisorsTokensAddress()
+        await TokenInstance.releaseadvisorsTokens()
         assert.ok(false, "It didn't fail")
       } catch(error){
         assert.ok(true, "It must failed");
