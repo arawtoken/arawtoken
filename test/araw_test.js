@@ -1,4 +1,5 @@
-var Token = artifacts.require("ArawToken");
+var Token = artifacts.require("ArawToken.sol")
+var PrivateSale = artifacts.require("PrivateSale.sol")
 
 var TokenName = "ARAW";
 var Symbol = "ARAW";
@@ -17,18 +18,16 @@ var reservedTokensAddress;
 var foundersTokensAddress;
 var advisorsTokensAddress;
 
-contract("Token contract", function(accounts){
+contract("Check Token contract", function(accounts){
 
   describe("Check SC instance", function(){
     it("catch an instance of tokenContract", function(){
       return Token.deployed().then(function(instance){
         TokenInstance = instance;
-        console.log("tokenContract = " + TokenInstance.address);
       });
     });
     it("Saving totalSupply", function(){
       return TokenInstance.totalSupply().then(function(res){
-        console.log("totalSupply = " + res.toString());
         totalSupply = res.toString();
         expect(res.toString()).to.be.equal((TokenSupply*(Math.pow(10,Decimals))).toString());
       });
@@ -38,19 +37,16 @@ contract("Token contract", function(accounts){
   describe ("Check initial parameters", function () {
     it ("Check Token name", function(){
       return TokenInstance.name.call().then(function(res){
-        console.log("Token name = " + res.toString());
         expect(res.toString()).to.be.equal(TokenName);
       })
     })
     it ("Check Token Symbol", function(){
       return TokenInstance.symbol.call().then(function(res){
-        console.log("Token Symbol = " + res.toString());
         expect(res.toString()).to.be.equal(Symbol);
       })
     })
     it ("check Token Decimals", function(){
       return TokenInstance.decimals.call().then(function(res){
-        console.log("Token decimals = " + res.toString());
         expect(parseInt(res.toString())).to.be.equal(Decimals);
       })
     })
@@ -59,28 +55,24 @@ contract("Token contract", function(accounts){
   describe ("Get tokenHolders addresses", function() {
     it ("check owner address", function(){
       return TokenInstance.owner.call().then(function(res){
-        console.log("owner = "+ res.toString());
         owner = res.toString();
       })
     })
 
     it ("check reservedTokensAddress address", function(){
       return TokenInstance.reservedTokensAddress.call().then(function(res){
-        console.log("reservedTokensAddress = "+ res.toString());
         reservedTokensAddress = res.toString();
       })
     })
 
     it ("check foundersTokensAddress address", function(){
       return TokenInstance.foundersTokensAddress.call().then(function(res){
-        console.log("foundersTokensAddress = "+ res.toString());
         foundersTokensAddress = res.toString();
       })
     })
 
     it ("check advisorsTokensAddress address", function(){
       return TokenInstance.advisorsTokensAddress.call().then(function(res){
-        console.log("advisorsTokensAddress = "+ res.toString());
         advisorsTokensAddress = res.toString();
       })
     })
@@ -93,29 +85,21 @@ contract("Token contract", function(accounts){
   describe ("Check initial balances", function(){
     it ("check owner balance", function(){
       return TokenInstance.balanceOf(web3.eth.accounts[0]).then(function(res){
-        console.log(res.toString());
-        // console.log(totalSupply);
         expect(res.toString()).to.be.equal((3650000000*Math.pow(10,Decimals)).toString());
       });
     });
     it ("check reservedTokensAddress balance", function(){
       return TokenInstance.balanceOf(reservedTokensAddress).then(function(res){
-        console.log(res.toString());
-        // console.log(totalSupply);
         expect(res.toString()).to.be.equal((750000000*Math.pow(10,Decimals)).toString());
       });
     });
     it ("check foundersTokensAddress balance", function(){
       return TokenInstance.balanceOf(foundersTokensAddress).then(function(res){
-        console.log(res.toString());
-        // console.log(totalSupply);
         expect(res.toString()).to.be.equal((450000000*Math.pow(10,Decimals)).toString());
       });
     });
     it ("check holded for advisorsTokensAddress in contract balance", function(){
       return TokenInstance.balanceOf(TokenInstance.address).then(function(res){
-        console.log(res.toString());
-        // console.log(totalSupply);
         expect(res.toString()).to.be.equal((150000000*Math.pow(10,Decimals)).toString());
       });
     });
@@ -150,6 +134,52 @@ contract("Token contract", function(accounts){
     })
   })
 
+  describe("Check PrivateSale contract", function(){
+    it("catch an instance of private sale contract", function(){
+      return PrivateSale.deployed().then(function(instance){
+        PrivateSaleInstance = instance;
+      });
+    });
+    it("send some owners tokens to privateSaleContract", async function(){
+        try {
+        await TokenInstance.transfer(PrivateSaleInstance.address, 3000000000*Math.pow(10,Decimals));
+        assert.ok(true, "It should not fail");
+      } catch(error){
+        assert.ok(false, "It mustn't failed")
+      }
+    });
+
+    it("check doPrivateSale function", async function(){
+      try {
+        await PrivateSaleInstance.doPrivateSale(web3.eth.accounts[5], 1000, 300);
+        assert.ok(true, "It should not fail");
+      } catch(error){
+        assert.ok(false, "It mustn't failed")
+      }
+    })
+
+    it("check his balance now", function(){
+      return TokenInstance.balanceOf(web3.eth.accounts[5]).then(function(res){
+        expect(res.toString()).to.be.equal('1000');
+      })
+    })
+    it("check his locked tokens", function(){
+      return PrivateSaleInstance.privateBonusLockedBalance(web3.eth.accounts[5]).then(function(res){
+        expect(res.toString()).to.be.equal('300')
+      })
+    })
+
+    it("check releasePrivateLockToken function", async function(){
+      try {
+        await PrivateSaleInstance.releasePrivateLockToken({from: web3.eth.accounts[5]});
+        assert.ok(false, "It didn't fail")
+      } catch(error){
+        assert.ok(true, "It must failed");
+      }
+    })
+  });
+
+
   describe ("increase EVM time", function(){
     it ("get blockTimestamp now", function(){
       console.log(web3.eth.getBlock(web3.eth.blockNumber).timestamp);
@@ -175,8 +205,6 @@ contract("Token contract", function(accounts){
 
     it ("check advisorsBalance now", function(){
       return TokenInstance.balanceOf(advisorsTokensAddress).then(function(res){
-        console.log(res.toString());
-        console.log((150000000*Math.pow(10,Decimals)/100*30).toString());
         expect(res.toString()).to.be.equal((150000000*Math.pow(10,Decimals)/100*30).toString())
       })
     })
@@ -202,8 +230,6 @@ contract("Token contract", function(accounts){
     })
     it ("check advisorsBalance now", function(){
       return TokenInstance.balanceOf(advisorsTokensAddress).then(function(res){
-        console.log(res.toString());
-        console.log((150000000*Math.pow(10,Decimals)).toString());
         expect(res.toString()).to.be.equal((150000000*Math.pow(10,Decimals)).toString())
       })
     })
@@ -215,6 +241,51 @@ contract("Token contract", function(accounts){
       } catch(error){
         assert.ok(true, "It must failed");
       }
+    })
+
+    it ("call releasePrivateLockToken now", async function(){
+      try {
+        await PrivateSaleInstance.releasePrivateLockToken(web3.eth.accounts[5]);
+        assert.ok(true, "It should not fail");
+      } catch(error){
+        assert.ok(false, "It mustn't failed")
+      }
+    })
+
+    it ("check his balance now", function(){
+      return TokenInstance.balanceOf(web3.eth.accounts[5]).then(function(res){
+        expect(res.toString()).to.be.equal('1300');
+      })
+    })
+    it("check his locked tokens now", function(){
+      return PrivateSaleInstance.privateBonusLockedBalance(web3.eth.accounts[5]).then(function(res){
+        expect(res.toString()).to.be.equal('0')
+      })
+    })
+    it("check owner balance", function(){
+      return TokenInstance.balanceOf(web3.eth.accounts[0]).then(function(res){
+        owner_balance = res.toString();
+      })
+    })
+    it("check contract balance", function(){
+      return TokenInstance.balanceOf(PrivateSaleInstance.address).then(function(res){
+        contract_balance = res.toString();
+      })
+    })
+
+    it("call depositRemainingTokensToOwner", async function(){
+      try{
+        await PrivateSaleInstance.depositRemainingTokensToOwner()
+        assert.ok(true, "it shouldn't fail")
+      }
+      catch(error){
+        assert.ok(false, "it must not failed")
+      }
+    })
+    it("check owners balance now", function(){
+      return TokenInstance.balanceOf(web3.eth.accounts[0]).then(function(res){
+        expect(res.toString()/1).to.be.equal(owner_balance/1 + contract_balance/1);
+      })
     })
   })
 })

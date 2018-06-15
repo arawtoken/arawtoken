@@ -13,7 +13,7 @@ import "./Ownable.sol";
   using SafeMath for uint256;
 
   // ERC20 basic token contract being held Araw Token as reference
-  ERC20Basic token;
+  ERC20Basic public token;
 
   // Timestamp when token release is enabled
   uint256 public releaseTime;
@@ -28,7 +28,7 @@ import "./Ownable.sol";
   event PrivateTokenUnlock(address indexed to, uint256 tokens);
 
   //Track no of tokens alocated to users and after private sale return remaining tokens back to owner
-  uint256 privateBonusLockedTokens;
+  uint256 public privateBonusLockedTokens;
   /**
   * @param _token This hold the erc20 araw token address on network.
   */
