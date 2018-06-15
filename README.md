@@ -66,69 +66,68 @@ Compiling ./contracts/ERC20.sol...
 Compiling ./contracts/ERC20Basic.sol...
 Compiling ./contracts/Migrations.sol...
 Compiling ./contracts/Ownable.sol...
+Compiling ./contracts/PrivateSale.sol...
 Compiling ./contracts/SafeMath.sol...
 Compiling ./contracts/StandardBurnableToken.sol...
 Compiling ./contracts/StandardToken.sol...
 
 
-  Contract: Token contract
+  Contract: Check Token contract
     Check SC instance
-tokenContract = 0xbc7ba4ba4a47b2ad31e3ddc2c9ff81d8ecb27b68
       ✓ catch an instance of tokenContract
-totalSupply = 5e+27
       ✓ Saving totalSupply
     Check initial parameters
-Token name = ARAW
       ✓ Check Token name
-Token Symbol = ARAW
       ✓ Check Token Symbol
-Token decimals = 18
       ✓ check Token Decimals
     Get tokenHolders addresses
-owner = 0x06bba2c1fe7cd17f34d0a7a2e45a52ead67a2a64
       ✓ check owner address
-reservedTokensAddress = 0x82ea2755a38637dd20322378266bf01260d35c73
       ✓ check reservedTokensAddress address
-foundersTokensAddress = 0xc47830de1dee63f8fcaa562bc5a78457a5dae819
       ✓ check foundersTokensAddress address
-advisorsTokensAddress = 0x19ebb94b0df82400cfdadfc4cbc77c3e1bad1304
       ✓ check advisorsTokensAddress address
     Check initial balances
-3.65e+27
-      ✓ check owner balance (111ms)
-7.5e+26
+      ✓ check owner balance (112ms)
       ✓ check reservedTokensAddress balance
-4.5e+26
       ✓ check foundersTokensAddress balance
-1.5e+26
       ✓ check holded for advisorsTokensAddress in contract balance
     Check function transfer
-      ✓ check owner possibility to transfer tokens (251ms)
-      ✓ check another user possibility to transfer tokens (230ms)
+      ✓ check owner possibility to transfer tokens (231ms)
+      ✓ check another user possibility to transfer tokens (218ms)
     close ICO
-      ✓ owner try to close ICO (165ms)
+      ✓ owner try to close ICO (125ms)
       ✓ owner try to close ICO again (this transacion must failed)
+    Check PrivateSale contract
+      ✓ catch an instance of private sale contract
+      ✓ send some owners tokens to privateSaleContract
+      ✓ check doPrivateSale function (134ms)
+      ✓ check his balance now (97ms)
+      ✓ check his locked tokens (100ms)
+      ✓ check releasePrivateLockToken function (90ms)
     increase EVM time
-1528898790
-      ✓ get blockTimestamp now (190ms)
-      ✓ increse up to 121 days (190ms)
-1539353191
-      ✓ get blockTimestamp again (185ms)
+1529078978
+      ✓ get blockTimestamp now (175ms)
+      ✓ increse up to 121 days (182ms)
+1539533379
+      ✓ get blockTimestamp again (174ms)
     release advisors tokens
-      ✓ calling releaseadvisorsTokens function (41ms)
-4.5e+25
-4.5e+25
+      ✓ calling releaseadvisorsTokens function (40ms)
       ✓ check advisorsBalance now
       ✓ try to call again (transacion must failed)
-      ✓ increse time to 3d release (201ms)
-      ✓ call releaseadvisorsTokens (43ms)
-1.5e+26
-1.5e+26
+      ✓ increse time to 3d release (184ms)
+      ✓ call releaseadvisorsTokens (42ms)
       ✓ check advisorsBalance now
       ✓ try to call again (transacion must failed)
+      ✓ call releasePrivateLockToken now (137ms)
+      ✓ check his balance now (98ms)
+      ✓ check his locked tokens now (99ms)
+      ✓ check owner balance (99ms)
+      ✓ check contract balance
+      ✓ call depositRemainingTokensToOwner (39ms)
+      ✓ check owners balance now (100ms)
 
 
-  27 passing (2s)
+  40 passing (3s)
+
 ```
 
 
