@@ -167,7 +167,7 @@ contract ArawToken is StandardBurnableToken, Ownable {
     if (!isAdvisorsTokensFirstReleased) {
       releaseAdvisorsTokensForPercentage(100);
     } else if (!isAdvisorsTokensSecondReleased) {
-      releaseTokenAdvisor(70);
+      releaseAdvisorsTokensForPercentage(70);
     } else{
       releaseAdvisorsTokensForPercentage(40);
     }
