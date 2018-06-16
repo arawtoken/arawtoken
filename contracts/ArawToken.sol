@@ -29,18 +29,16 @@ contract ArawToken is StandardBurnableToken, Ownable {
   bool public isAdvisorsTokensSecondReleased; 
   bool public isAdvisorsTokensThirdReleased; 
 
-  uint256 public reservedTokensAddressLockedPeriod;
+  /* Variables to hold reserved and founders tokens locking period */
+  uint256 public reservedTokensLockedPeriod;
   uint256 public foundersTokensLockedPeriod;
 
   /* Total advisors tokens allocated */
   uint256 totalAdvisorsLockedTokens; 
 
-  /* The outstnading advisors tokens balance */
-  uint256 public advisorsLockedTokensBalance; 
-
   modifier checkAfterICOLock () {
     if (msg.sender == reservedTokensAddress){
-        require (now >= reservedTokensAddressLockedPeriod);
+        require (now >= reservedTokensLockedPeriod);
     }
     if (msg.sender == foundersTokensAddress){
         require (now >= foundersTokensLockedPeriod);
@@ -48,25 +46,41 @@ contract ArawToken is StandardBurnableToken, Ownable {
     _;
   }
 
-  function transfer(address _to, uint256 _value) public checkAfterICOLock returns (bool) {
+  function transfer(address _to, uint256 _value) 
+  public 
+  checkAfterICOLock 
+  returns (bool) {
     super.transfer(_to,_value);
   }
 
-  function transferFrom(address _from, address _to, uint256 _value) public checkAfterICOLock returns (bool){
+  function transferFrom(address _from, address _to, uint256 _value) 
+  public 
+  checkAfterICOLock 
+  returns (bool) {
     super.transferFrom(_from, _to, _value);
   }
 
-  function approve(address _spender, uint256 _value) public checkAfterICOLock returns (bool) {
+  function approve(address _spender, uint256 _value) 
+  public 
+  checkAfterICOLock 
+  returns (bool) {
     super.approve(_spender, _value);
   }
 
-  function increaseApproval(address _spender, uint _addedValue) public checkAfterICOLock returns (bool) {
+  function increaseApproval(address _spender, uint _addedValue) 
+  public 
+  checkAfterICOLock 
+  returns (bool) {
     super.increaseApproval(_spender, _addedValue);
   }
 
-  function decreaseApproval(address _spender, uint _subtractedValue) public checkAfterICOLock returns (bool) {
+  function decreaseApproval(address _spender, uint _subtractedValue) 
+  public 
+  checkAfterICOLock 
+  returns (bool) {
     super.decreaseApproval(_spender, _subtractedValue);
   }
+
   /**
    * @dev Transfer ownership now transfers all owners tokens to new owner 
    */
@@ -108,7 +122,6 @@ contract ArawToken is StandardBurnableToken, Ownable {
     
     totalAdvisorsLockedTokens = 150000000 ether;
     balances[this] = 150000000 ether;
-    advisorsLockedTokensBalance = totalAdvisorsLockedTokens;
    
     state = State.Active;
    
@@ -121,26 +134,28 @@ contract ArawToken is StandardBurnableToken, Ownable {
   /**
    * @dev release tokens for advisors
    */
-  function releaseadvisorsTokens() public returns (bool) {
+  function releaseAdvisorsTokens() public returns (bool) {
     require(state == State.Closed);
     
     require (now > advisorsTokensFirstReleaseTime);
+    
     if (now < advisorsTokensSecondReleaseTime) {   
       require (!isAdvisorsTokensFirstReleased);
       
       isAdvisorsTokensFirstReleased = true;
-      releaseTokenAdvisor(30);
+      releaseAdvisorsTokensForPercentage(30);
 
       return true;
     }
+
     if (now < advisorsTokensThirdReleaseTime) {
       require (!isAdvisorsTokensSecondReleased);
       
       if (!isAdvisorsTokensFirstReleased) {
         isAdvisorsTokensFirstReleased = true;
-        releaseTokenAdvisor(60);
+        releaseAdvisorsTokensForPercentage(60);
       } else{
-        releaseTokenAdvisor(30);
+        releaseAdvisorsTokensForPercentage(30);
       }
       
       isAdvisorsTokensSecondReleased = true;
@@ -148,12 +163,13 @@ contract ArawToken is StandardBurnableToken, Ownable {
     }
 
     require (!isAdvisorsTokensThirdReleased);
+
     if (!isAdvisorsTokensFirstReleased) {
-      releaseTokenAdvisor(100);
+      releaseAdvisorsTokensForPercentage(100);
     } else if (!isAdvisorsTokensSecondReleased) {
       releaseTokenAdvisor(70);
     } else{
-      releaseTokenAdvisor(40);
+      releaseAdvisorsTokensForPercentage(40);
     }
 
     isAdvisorsTokensFirstReleased = true;
@@ -166,7 +182,7 @@ contract ArawToken is StandardBurnableToken, Ownable {
   /**
    * @param percent tokens release for advisors from their pool
    */
-  function releaseTokenAdvisor(uint256 percent) internal {
+  function releaseAdvisorsTokensForPercentage(uint256 percent) internal {
     uint256 releasedTokens = (percent.mul(totalAdvisorsLockedTokens)).div(100);
 
     balances[advisorsTokensAddress] = balances[advisorsTokensAddress].add(releasedTokens);
@@ -191,7 +207,7 @@ contract ArawToken is StandardBurnableToken, Ownable {
     state = State.Closed;
     
     foundersTokensLockedPeriod = now + 365 days;
-    reservedTokensAddressLockedPeriod = now + 1095 days; //3 years
+    reservedTokensLockedPeriod = now + 1095 days; //3 years
     advisorsTokensFirstReleaseTime = now + 12 weeks; //3 months to unlock 30 %
     advisorsTokensSecondReleaseTime = now + 24 weeks; // 6 months to unlock 30%
     advisorsTokensThirdReleaseTime = now + 365 days; //1 year to unlock 40 %
