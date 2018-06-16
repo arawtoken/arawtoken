@@ -197,8 +197,8 @@ contract("Check Token contract", function(accounts){
   })
 
   describe("release advisors tokens", function(){
-    it ("calling releaseadvisorsTokens function", function(){
-      return TokenInstance.releaseadvisorsTokens().then(function(res){
+    it ("calling releaseAdvisorsTokens function", function(){
+      return TokenInstance.releaseAdvisorsTokens().then(function(res){
         expect(res.toString()).to.not.be.an("error");
       })
     })
@@ -211,7 +211,7 @@ contract("Check Token contract", function(accounts){
 
     it ("try to call again (transacion must failed)", async function(){
       try {
-        await TokenInstance.releaseadvisorsTokens()
+        await TokenInstance.releaseAdvisorsTokens()
         assert.ok(false, "It didn't fail")
       } catch(error){
         assert.ok(true, "It must failed");
@@ -223,8 +223,8 @@ contract("Check Token contract", function(accounts){
       web3.currentProvider.send({jsonrpc: "2.0", method: "evm_mine", params: [], id: 0})
     })
 
-    it ("call releaseadvisorsTokens", function(){
-      return TokenInstance.releaseadvisorsTokens().then(function(res){
+    it ("call releaseAdvisorsTokens", function(){
+      return TokenInstance.releaseAdvisorsTokens().then(function(res){
         expect(res.toString()).to.not.be.an("error");
       })
     })
@@ -236,7 +236,7 @@ contract("Check Token contract", function(accounts){
 
     it ("try to call again (transacion must failed)", async function(){
       try {
-        await TokenInstance.releaseadvisorsTokens()
+        await TokenInstance.releaseAdvisorsTokens()
         assert.ok(false, "It didn't fail")
       } catch(error){
         assert.ok(true, "It must failed");

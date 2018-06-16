@@ -86,43 +86,43 @@ Compiling ./contracts/StandardToken.sol...
       ✓ check foundersTokensAddress address
       ✓ check advisorsTokensAddress address
     Check initial balances
-      ✓ check owner balance (112ms)
+      ✓ check owner balance (105ms)
       ✓ check reservedTokensAddress balance
       ✓ check foundersTokensAddress balance
       ✓ check holded for advisorsTokensAddress in contract balance
     Check function transfer
-      ✓ check owner possibility to transfer tokens (231ms)
-      ✓ check another user possibility to transfer tokens (218ms)
+      ✓ check owner possibility to transfer tokens (222ms)
+      ✓ check another user possibility to transfer tokens (214ms)
     close ICO
-      ✓ owner try to close ICO (125ms)
+      ✓ owner try to close ICO (180ms)
       ✓ owner try to close ICO again (this transacion must failed)
     Check PrivateSale contract
       ✓ catch an instance of private sale contract
       ✓ send some owners tokens to privateSaleContract
-      ✓ check doPrivateSale function (134ms)
-      ✓ check his balance now (97ms)
-      ✓ check his locked tokens (100ms)
-      ✓ check releasePrivateLockToken function (90ms)
+      ✓ check doPrivateSale function (144ms)
+      ✓ check his balance now (100ms)
+      ✓ check his locked tokens (102ms)
+      ✓ check releasePrivateLockToken function (89ms)
     increase EVM time
-1529078978
-      ✓ get blockTimestamp now (175ms)
-      ✓ increse up to 121 days (182ms)
-1539533379
-      ✓ get blockTimestamp again (174ms)
+1561198547
+      ✓ get blockTimestamp now (186ms)
+      ✓ increse up to 121 days (184ms)
+1571652948
+      ✓ get blockTimestamp again (175ms)
     release advisors tokens
-      ✓ calling releaseadvisorsTokens function (40ms)
+      ✓ calling releaseAdvisorsTokens function (38ms)
       ✓ check advisorsBalance now
       ✓ try to call again (transacion must failed)
-      ✓ increse time to 3d release (184ms)
-      ✓ call releaseadvisorsTokens (42ms)
+      ✓ increse time to 3d release (183ms)
+      ✓ call releaseAdvisorsTokens
       ✓ check advisorsBalance now
       ✓ try to call again (transacion must failed)
-      ✓ call releasePrivateLockToken now (137ms)
-      ✓ check his balance now (98ms)
-      ✓ check his locked tokens now (99ms)
-      ✓ check owner balance (99ms)
+      ✓ call releasePrivateLockToken now (133ms)
+      ✓ check his balance now (99ms)
+      ✓ check his locked tokens now (102ms)
+      ✓ check owner balance (102ms)
       ✓ check contract balance
-      ✓ call depositRemainingTokensToOwner (39ms)
+      ✓ call depositRemainingTokensToOwner
       ✓ check owners balance now (100ms)
 
 
