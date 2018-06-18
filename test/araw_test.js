@@ -8,7 +8,6 @@ var Decimals = 18;
 
 var TokenBuffer = 0;
 
-
 expect = require("chai").expect;
 
 var totalSupply;
@@ -17,6 +16,7 @@ var owner;
 var reservedTokensAddress;
 var foundersTokensAddress;
 var advisorsTokensAddress;
+var arawWallet;
 
 contract("Check Token contract", function(accounts){
 
@@ -76,11 +76,12 @@ contract("Check Token contract", function(accounts){
         advisorsTokensAddress = res.toString();
       })
     })
-
+    it ("check arawWallet address", function(){
+      return TokenInstance.arawWallet.call().then(function(res){
+        arawWallet = res.toString();
+      })
+    })
   })
-
-
-
 
   describe ("Check initial balances", function(){
     it ("check owner balance", function(){
@@ -118,6 +119,34 @@ contract("Check Token contract", function(accounts){
     })
   })
 
+  var bufferBalance;
+
+  describe ("Check buying function", function(){
+    it ("check arawWallet balance", function(){
+      bufferBalance = web3.eth.getBalance(arawWallet).toString();
+    })
+
+    it ("send 0.05 ETH to contract", async function(){
+      try {
+        await web3.eth.sendTransaction({from: web3.eth.accounts[6], to: TokenInstance.address, value: 50000000000000000})
+        assert.ok(false, "It didn't fail")
+      } catch(error){
+        assert.ok(true, "It must failed");
+      }
+    })
+    it ("send 0.1 ETH to contract", async function(){
+      try {
+        await web3.eth.sendTransaction({from: web3.eth.accounts[6], to: TokenInstance.address, value: 100000000000000000})
+        assert.ok(true, "It should not fail");
+      } catch(error){
+        assert.ok(false, "It mustn't failed")
+      }
+    })
+    it ("check arawWallet balance now", function(){
+      expect(web3.eth.getBalance(arawWallet).toString()/1).to.be.equal(bufferBalance/1 + 100000000000000000);
+    })
+  })
+
   describe ("close ICO", function(){
     it ("owner try to close ICO", function(){
       return TokenInstance.close({from: web3.eth.accounts[0]}).then(function(res){
@@ -131,6 +160,32 @@ contract("Check Token contract", function(accounts){
       } catch(error){
         assert.ok(true, "It must failed");
       }
+    })
+  })
+
+  describe ("Check buying function now", function(){
+    it ("check arawWallet balance", function(){
+      bufferBalance = web3.eth.getBalance(arawWallet).toString();
+    })
+
+    it ("send 0.05 ETH to contract", async function(){
+      try {
+        await web3.eth.sendTransaction({from: web3.eth.accounts[6], to: TokenInstance.address, value: 50000000000000000})
+        assert.ok(false, "It didn't fail")
+      } catch(error){
+        assert.ok(true, "It must failed");
+      }
+    })
+    it ("send 0.1 ETH to contract", async function(){
+      try {
+        await web3.eth.sendTransaction({from: web3.eth.accounts[6], to: TokenInstance.address, value: 50000000000000000})
+        assert.ok(false, "It didn't fail")
+      } catch(error){
+        assert.ok(true, "It must failed");
+      }
+    })
+    it ("check arawWallet balance now", function(){
+      expect(web3.eth.getBalance(arawWallet).toString()).to.be.equal(bufferBalance);
     })
   })
 
@@ -179,10 +234,9 @@ contract("Check Token contract", function(accounts){
     })
   });
 
-
   describe ("increase EVM time", function(){
     it ("get blockTimestamp now", function(){
-      console.log(web3.eth.getBlock(web3.eth.blockNumber).timestamp);
+      console.log("current timestamp = " + web3.eth.getBlock(web3.eth.blockNumber).timestamp);
     })
 
 
@@ -192,7 +246,7 @@ contract("Check Token contract", function(accounts){
     })
 
     it ("get blockTimestamp again", function(){
-      console.log(web3.eth.getBlock(web3.eth.blockNumber).timestamp);
+      console.log("current timestamp = " + web3.eth.getBlock(web3.eth.blockNumber).timestamp);
     })
   })
 
