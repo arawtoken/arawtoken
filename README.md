@@ -86,48 +86,59 @@ Compiling ./contracts/StandardToken.sol...
       ✓ check reservedTokensAddress address
       ✓ check foundersTokensAddress address
       ✓ check advisorsTokensAddress address
+      ✓ check arawWallet address
     Check initial balances
-      ✓ check owner balance (105ms)
+      ✓ check owner balance (129ms)
       ✓ check reservedTokensAddress balance
       ✓ check foundersTokensAddress balance
       ✓ check holded for advisorsTokensAddress in contract balance
     Check function transfer
-      ✓ check owner possibility to transfer tokens (222ms)
-      ✓ check another user possibility to transfer tokens (214ms)
+      ✓ check owner possibility to transfer tokens (220ms)
+      ✓ check another user possibility to transfer tokens (220ms)
+    Check buying function
+      ✓ check arawWallet balance (90ms)
+      ✓ send 0.05 ETH to contract (196ms)
+      ✓ send 0.1 ETH to contract (194ms)
+      ✓ check arawWallet balance now (93ms)
     close ICO
-      ✓ owner try to close ICO (180ms)
+      ✓ owner try to close ICO (128ms)
       ✓ owner try to close ICO again (this transacion must failed)
+    Check buying function now
+      ✓ check arawWallet balance (94ms)
+      ✓ send 0.05 ETH to contract (193ms)
+      ✓ send 0.1 ETH to contract (187ms)
+      ✓ check arawWallet balance now (90ms)
     Check PrivateSale contract
       ✓ catch an instance of private sale contract
       ✓ send some owners tokens to privateSaleContract
-      ✓ check doPrivateSale function (144ms)
-      ✓ check his balance now (100ms)
-      ✓ check his locked tokens (102ms)
-      ✓ check releasePrivateLockToken function (89ms)
+      ✓ check doPrivateSale function (143ms)
+      ✓ check his balance now (102ms)
+      ✓ check his locked tokens (106ms)
+      ✓ check releasePrivateLockToken function (113ms)
     increase EVM time
-1561198547
-      ✓ get blockTimestamp now (186ms)
-      ✓ increse up to 121 days (184ms)
-1571652948
-      ✓ get blockTimestamp again (175ms)
+current timestamp = 1529319624
+      ✓ get blockTimestamp now (201ms)
+      ✓ increse up to 121 days (185ms)
+current timestamp = 1539774024
+      ✓ get blockTimestamp again (186ms)
     release advisors tokens
-      ✓ calling releaseAdvisorsTokens function (38ms)
+      ✓ calling releaseAdvisorsTokens function
       ✓ check advisorsBalance now
       ✓ try to call again (transacion must failed)
-      ✓ increse time to 3d release (183ms)
-      ✓ call releaseAdvisorsTokens
+      ✓ increse time to 3d release (189ms)
+      ✓ call releaseAdvisorsTokens (41ms)
       ✓ check advisorsBalance now
       ✓ try to call again (transacion must failed)
-      ✓ call releasePrivateLockToken now (133ms)
-      ✓ check his balance now (99ms)
-      ✓ check his locked tokens now (102ms)
+      ✓ call releasePrivateLockToken now (144ms)
+      ✓ check his balance now (105ms)
+      ✓ check his locked tokens now (100ms)
       ✓ check owner balance (102ms)
       ✓ check contract balance
-      ✓ call depositRemainingTokensToOwner
-      ✓ check owners balance now (100ms)
+      ✓ call depositRemainingTokensToOwner (40ms)
+      ✓ check owners balance now (104ms)
 
 
-  40 passing (3s)
+  49 passing (4s)
 
 ```
 
