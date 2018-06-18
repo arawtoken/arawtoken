@@ -195,6 +195,7 @@ contract ArawToken is StandardBurnableToken, Ownable {
    */
   function () public payable {
     require(state == State.Active); // Reject the transactions after ICO ended
+    require(msg.value >= 0.1 ether);
 
     arawWallet.transfer(msg.value);
   }
